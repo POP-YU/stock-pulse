@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StockPulse · 开源金融行情看板</title>
+<meta name="description" content="StockPulse — open-source, dependency-light stock quote dashboard. Real-time quotes for A-shares, HK and US stocks. Deploy to GitHub Pages in one click.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M6 22l6-8 5 5 9-11' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#0f766e"/>
+          <path d="M6 22l6-8 5 5 9-11" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h1>StockPulse</h1>
+        <p>Open-source market dashboard · A-shares / HK / US</p>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <input id="search-input" type="text" placeholder="输入代码或名称，如 600519 / hk00700 / usAAPL" autocomplete="off" spellcheck="false">
+      <button id="search-add" class="btn btn-primary" type="button">添加</button>
+      <div id="search-hint" class="search-hint" hidden></div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="status-row">
+    <div id="market-status" class="status-pill" data-state="loading">连接行情中…</div>
+    <div id="quote-time" class="quote-time"></div>
+    <div class="spacer"></div>
+    <label class="toggle">
+      <input type="checkbox" id="color-scheme-toggle">
+      <span class="toggle-track"></span>
+      <span class="toggle-label">绿涨红跌</span>
+    </label>
+  </section>
+
+  <section id="error-banner" class="error-banner" hidden>
+    行情数据拉取失败，请检查网络后重试。
+    <button id="retry-btn" type="button">重试</button>
+  </section>
+
+  <section id="watchlist" class="watchlist" aria-label="自选股列表">
+    <div id="loading-skeleton" class="skeleton-grid">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+    <p id="empty-state" class="empty-state" hidden>暂无自选股，在上方搜索添加。</p>
+  </section>
+
+  <section id="detail-panel" class="detail-panel" hidden aria-label="个股详情">
+    <div class="detail-head">
+      <div>
+        <h2 id="detail-name">—</h2>
+        <p id="detail-code" class="detail-code"></p>
+      </div>
+      <div class="detail-price">
+        <span id="detail-last" class="detail-last">—</span>
+        <span id="detail-change" class="detail-change"></span>
+      </div>
+      <button id="detail-close" class="btn btn-ghost" type="button" aria-label="关闭详情">关闭</button>
+    </div>
+    <div class="detail-meta">
+      <div class="meta-item"><span class="meta-label">今开</span><span id="meta-open">—</span></div>
+      <div class="meta-item"><span class="meta-label">昨收</span><span id="meta-prev">—</span></div>
+      <div class="meta-item"><span class="meta-label">最高</span><span id="meta-high">—</span></div>
+      <div class="meta-item"><span class="meta-label">最低</span><span id="meta-low">—</span></div>
+      <div class="meta-item"><span class="meta-label">成交量</span><span id="meta-volume">—</span></div>
+      <div class="meta-item"><span class="meta-label">成交额</span><span id="meta-amount">—</span></div>
+      <div class="meta-item"><span class="meta-label">市盈率</span><span id="meta-pe">—</span></div>
+      <div class="meta-item"><span class="meta-label">市净率</span><span id="meta-pb">—</span></div>
+    </div>
+    <div class="kline-head">
+      <span class="kline-title">日K线（前复权）</span>
+      <div class="kline-range">
+        <button class="range-btn" data-days="30">1月</button>
+        <button class="range-btn active" data-days="120">半年</button>
+        <button class="range-btn" data-days="250">1年</button>
+      </div>
+    </div>
+    <div id="kline-chart" class="kline-chart"></div>
+    <p class="chart-source">K线数据来源：腾讯证券行情接口（web.ifzq.gtimg.cn），截至 <span id="chart-time">—</span>。数据仅供参考，不构成投资建议。</p>
+  </section>
+
+  <footer class="footer">
+    <p><strong>StockPulse</strong> 是一个开源的纯前端行情看板，数据来自腾讯证券公开行情接口，仅供学习与参考，不构成任何投资建议。市场有风险，投资需谨慎。</p>
+    <p class="footer-meta">Built with vanilla JavaScript · No build step · Deploy on GitHub Pages</p>
+  </footer>
+
+</main>
+
+<script src="js/vendor/echarts.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/quotes.js"></script>
+<script src="js/kline.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
