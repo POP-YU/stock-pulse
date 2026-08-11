@@ -4,7 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StockPulse · 开源金融行情看板</title>
-<meta name="description" content="StockPulse — open-source, dependency-light stock quote dashboard. Real-time quotes for A-shares, HK and US stocks. Deploy to GitHub Pages in one click.">
+<meta name="description" content="StockPulse — open-source, dependency-light stock quote dashboard for A-shares, Hong Kong and US equities. No backend, build step, or API key required.">
+<meta name="author" content="POP-YU">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0f766e">
+<link rel="canonical" href="https://pop-yu.github.io/stock-pulse/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="StockPulse · Open-source market dashboard">
+<meta property="og:description" content="A dependency-light browser dashboard for A-shares, Hong Kong and US equities.">
+<meta property="og:url" content="https://pop-yu.github.io/stock-pulse/">
+<meta property="og:site_name" content="StockPulse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="StockPulse · Open-source market dashboard">
+<meta name="twitter:description" content="A dependency-light browser dashboard for A-shares, Hong Kong and US equities.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M6 22l6-8 5 5 9-11' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -25,9 +37,9 @@
       </div>
     </div>
     <div class="search-wrap">
-      <input id="search-input" type="text" placeholder="输入代码或名称，如 600519 / hk00700 / usAAPL" autocomplete="off" spellcheck="false">
+      <input id="search-input" type="text" aria-label="搜索股票代码或名称" placeholder="输入代码或名称，如 600519 / hk00700 / usAAPL" autocomplete="off" spellcheck="false">
       <button id="search-add" class="btn btn-primary" type="button">添加</button>
-      <div id="search-hint" class="search-hint" hidden></div>
+      <div id="search-hint" class="search-hint" aria-live="polite" hidden></div>
     </div>
   </div>
 </header>
@@ -35,7 +47,7 @@
 <main class="container">
 
   <section class="status-row">
-    <div id="market-status" class="status-pill" data-state="loading">连接行情中…</div>
+    <div id="market-status" class="status-pill" data-state="loading" aria-live="polite">连接行情中…</div>
     <div id="quote-time" class="quote-time"></div>
     <div class="spacer"></div>
     <label class="toggle">
@@ -45,7 +57,7 @@
     </label>
   </section>
 
-  <section id="error-banner" class="error-banner" hidden>
+  <section id="error-banner" class="error-banner" role="alert" hidden>
     行情数据拉取失败，请检查网络后重试。
     <button id="retry-btn" type="button">重试</button>
   </section>
