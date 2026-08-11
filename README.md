@@ -1,33 +1,34 @@
 # StockPulse
 
-Open-source, dependency-light financial market dashboard for **A-shares, Hong Kong stocks, and US equities**. StockPulse runs entirely in the browser with vanilla JavaScript: no backend, no build step, and no API key required.
+Open-source, **zero-runtime-dependency** financial market dashboard for **A-shares, Hong Kong stocks, and US equities**. StockPulse runs entirely in the browser with vanilla JavaScript: no backend, no build step, no package install, and no API key required.
 
 [![CI](https://github.com/POP-YU/stock-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/POP-YU/stock-pulse/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/POP-YU/stock-pulse/actions/workflows/codeql.yml/badge.svg)](https://github.com/POP-YU/stock-pulse/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Maintained](https://img.shields.io/badge/status-active-brightgreen.svg)](MAINTAINERS.md)
 
-> Project status: **early-stage and actively maintained**. The project is intentionally small and dependency-light so contributors can understand the full data flow quickly.
+> Project status: **early-stage and actively maintained**. The codebase is intentionally small so contributors can understand the full data flow without learning a framework or build system first.
 
 ## Why StockPulse
 
-Most market dashboards require a backend, build system, account, or API key. StockPulse focuses on a different goal: a readable, self-contained reference implementation for fetching and visualizing cross-market quote data directly in the browser.
+Many market dashboards require a backend, build toolchain, account, API key, or runtime CDN. StockPulse is a readable, self-contained reference implementation for fetching and visualizing cross-market quote data directly in the browser.
 
 - **Zero setup**: static files only; no package install and no build step.
+- **Zero runtime dependencies**: K-line and volume charts are rendered with the browser Canvas API.
 - **Cross-market**: A-shares, Hong Kong, and US stocks in one watchlist.
 - **Transparent architecture**: small JavaScript modules with a documented data flow.
 - **Portable**: works on any static host, including GitHub Pages.
-- **Educational by design**: useful for learning quote ingestion, text decoding, state management, and candlestick visualization.
+- **Educational by design**: useful for learning data ingestion, defensive parsing, state management, accessibility, and financial chart rendering.
 
 ## Features
 
-- Real-time quote fields: last price, change, change %, open, previous close, high, low, volume, turnover, P/E, and P/B.
+- Real-time quote fields: last price, change, change %, open, previous close, high, low, volume, turnover, P/E, and P/B when supplied upstream.
 - Daily candlestick and volume charts with 1M / 6M / 1Y ranges.
 - Search by A-share code, HK code, or US ticker.
 - Watchlist persistence via `localStorage`.
 - China and international red/green color conventions.
-- Mobile-responsive UI and `prefers-reduced-motion` support.
-- No runtime CDN dependency for ECharts.
+- Mobile-responsive UI, keyboard-accessible stock cards, live status announcements, and `prefers-reduced-motion` support.
+- No runtime CDN or third-party JavaScript dependency.
 
 ## Quick start
 
@@ -56,9 +57,8 @@ The site will be available at `https://pop-yu.github.io/stock-pulse/` after GitH
 
 - Real-time quotes: Tencent Finance `qt.gtimg.cn` public endpoint.
 - Daily K-line data: Tencent Finance `web.ifzq.gtimg.cn`.
-- ECharts 5 is vendored locally under `js/vendor/`.
 
-External market-data endpoints can change without notice. StockPulse therefore treats data access as a replaceable boundary rather than a permanent API contract.
+External market-data endpoints can change without notice. StockPulse treats data access as a replaceable boundary and fails gracefully when upstream data is unavailable or malformed.
 
 ## Architecture
 
@@ -72,12 +72,12 @@ js/app.js  -------- user interaction / application state
    |
    +---------- js/quotes.js ---- real-time quote retrieval / decoding
    |
-   +---------- js/kline.js ----- historical K-line retrieval / chart rendering
+   +---------- js/kline.js ----- K-line retrieval / native Canvas rendering
    |
    +---------- js/config.js ---- endpoints and defaults
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for design principles, module boundaries, and contribution guidance.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for design principles, trust boundaries, and contribution guidance.
 
 ## Project structure
 
@@ -90,8 +90,7 @@ stock-pulse/
 │   ├── config.js
 │   ├── kline.js
 │   ├── quotes.js
-│   ├── ui.js
-│   └── vendor/
+│   └── ui.js
 ├── tests/
 │   └── smoke.mjs
 ├── docs/
