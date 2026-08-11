@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest an improvement that fits StockPulse's lightweight scope
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please describe the user problem first. StockPulse favors low-complexity features that preserve static hosting, readable code, and no required secrets.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What is difficult today, and who would benefit?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: Describe the smallest useful solution you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional. Are there simpler approaches or workarounds?
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This can remain compatible with static hosting or clearly explains why architecture should change.
+          required: true
+        - label: This does not require users to share brokerage credentials or private financial data.
+          required: true
