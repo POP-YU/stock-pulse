@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/POP-YU/stock-pulse/security
+    about: Please use a private security-reporting path for sensitive vulnerabilities; do not post exploit details publicly.
+  - name: Support guidance
+    url: https://github.com/POP-YU/stock-pulse/blob/main/SUPPORT.md
+    about: Read the support and upstream-data troubleshooting guidance before filing an issue.
