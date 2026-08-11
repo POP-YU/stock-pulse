@@ -11,9 +11,10 @@ const requiredFiles = [
   'js/kline.js',
   'js/ui.js',
   'js/app.js',
-  'js/vendor/echarts.min.js',
   'LICENSE',
   'README.md',
+  'CONTRIBUTING.md',
+  'SECURITY.md',
 ];
 
 const failures = [];
@@ -44,7 +45,6 @@ if (fs.existsSync(indexPath)) {
   }
 
   const requiredScripts = [
-    'js/vendor/echarts.min.js',
     'js/config.js',
     'js/quotes.js',
     'js/kline.js',
@@ -56,10 +56,17 @@ if (fs.existsSync(indexPath)) {
     if (!html.includes(`src="${script}"`)) {
       failures.push(`index.html is missing script reference: ${script}`);
     }
+    if (!fs.existsSync(path.join(root, script))) {
+      failures.push(`index.html references missing local script: ${script}`);
+    }
   }
 
   if (!html.includes('css/style.css')) {
     failures.push('index.html is missing the main stylesheet reference');
+  }
+
+  if (!html.includes('https://pop-yu.github.io/stock-pulse/')) {
+    failures.push('index.html is missing canonical GitHub Pages metadata');
   }
 }
 
