@@ -40,3 +40,38 @@
 ### Next Priority
 
 - Add a minimal, safe WebMCP tool surface and deterministic smoke coverage without breaking the existing dashboard.
+
+
+## 2026-08-28 — WebMCP contract hardening
+
+### Checked
+
+- Re-ran remote branch and Actions checks after the WebMCP changes.
+- Reviewed the WebMCP registration lifecycle and the quote-provider trust boundary.
+
+### Problems Found
+
+- Registration needed an awaitable readiness signal so an inspector or agent does not race the initial tool setup.
+- The initial CI workflow did not explicitly run the WebMCP contract test or syntax-check webmcp.js.
+- JSONP quote endpoints execute provider responses in page context; this remains a documented high-risk boundary.
+
+### Changes Made
+
+- Added window.StockPulseWebMCPReady and status reporting; registration continues per tool and records partial failure.
+- Added tests/webmcp-contract.mjs for registration names, schemas, annotations, normalization, and invalid-input bounds.
+- Updated CI to run node --check js/webmcp.js and the contract test.
+- Documented the JSONP boundary and a proxy/isolation hardening path.
+
+### Verification
+
+- The preceding CI run passed; the latest run is re-triggered for the final head and must be rechecked before merge.
+- Real browser discovery/execution, live deployment, and challenge eligibility remain UNVERIFIED.
+
+### Remaining Risks
+
+- App refresh calls can still overlap under timer/retry/agent activity; a later hardening pass should add cancellation or request generations.
+- The mutating bridge is exposed to same-origin page scripts; keep the action explicit and avoid sensitive data in the page.
+
+### Next Priority
+
+- Verify the latest CI and CodeQL runs, then perform a Chrome WebMCP browser smoke test and publish/verify the live URL before the September 3 freeze.
