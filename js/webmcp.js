@@ -147,7 +147,4 @@
     }
   });
 
-  if (document.readyState === 'loading') {
-    // The ready promise above owns registration; this listener is intentionally empty.
-  }
 })();
