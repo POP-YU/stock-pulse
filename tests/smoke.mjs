@@ -11,6 +11,7 @@ const requiredFiles = [
   'js/kline.js',
   'js/ui.js',
   'js/app.js',
+  'js/webmcp.js',
   'LICENSE',
   'README.md',
   'CONTRIBUTING.md',
@@ -50,6 +51,7 @@ if (fs.existsSync(indexPath)) {
     'js/kline.js',
     'js/ui.js',
     'js/app.js',
+    'js/webmcp.js',
   ];
 
   for (const script of requiredScripts) {
@@ -69,6 +71,24 @@ if (fs.existsSync(indexPath)) {
     failures.push('index.html is missing canonical GitHub Pages metadata');
   }
 }
+
+  const webmcpPath = path.join(root, 'js/webmcp.js');
+  if (fs.existsSync(webmcpPath)) {
+    const webmcp = fs.readFileSync(webmcpPath, 'utf8');
+    for (const toolName of [
+      'stockpulse_get_watchlist',
+      'stockpulse_get_quote',
+      'stockpulse_compare_watchlist',
+      'stockpulse_add_to_watchlist',
+    ]) {
+      if (!webmcp.includes(toolName)) {
+        failures.push('webmcp.js is missing registered tool name: ' + toolName);
+      }
+    }
+    if (!webmcp.includes('registerTool')) {
+      failures.push('webmcp.js is missing the WebMCP registration API');
+    }
+  }
 
 if (failures.length > 0) {
   console.error('StockPulse smoke checks failed:');
