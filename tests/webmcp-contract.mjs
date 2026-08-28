@@ -8,6 +8,7 @@ const registrations = [];
 const snapshot = {
   watchlist: ['sh600519'],
   quotes: [{ symbol: 'sh600519', name: 'Demo', changePct: 1.2, last: 100, change: 1 }],
+  refresh: { ok: true, stale: false, error: null },
 };
 const app = {
   getSnapshot: () => snapshot,
@@ -44,6 +45,7 @@ const byName = Object.fromEntries(registrations.map((tool) => [tool.name, tool])
 assert.equal(byName.stockpulse_get_watchlist.annotations.readOnlyHint, true);
 assert.equal(byName.stockpulse_add_to_watchlist.annotations.readOnlyHint, false);
 assert.equal(byName.stockpulse_get_quote.inputSchema.required[0], 'symbol');
+assert.equal(byName.stockpulse_get_quote.inputSchema.properties.symbol.maxLength, 16);
 
 await assert.rejects(
   byName.stockpulse_get_quote.execute({ symbol: '' }),
@@ -54,7 +56,16 @@ await assert.rejects(
   /no longer than 16/,
 );
 assert.equal((await byName.stockpulse_get_quote.execute({ symbol: 'AAPL' })).quote.symbol, 'usAAPL');
+assert.equal((await byName.stockpulse_compare_watchlist.execute({})).ok, true);
 assert.equal((await byName.stockpulse_compare_watchlist.execute({})).count, 1);
+context.window.StockPulseApp = {
+  ...app,
+  refreshAndSnapshot: async () => ({ ...snapshot, refresh: { ok: false, stale: false, error: 'Quote refresh failed' } }),
+};
+const failedCompare = await byName.stockpulse_compare_watchlist.execute({});
+assert.equal(failedCompare.ok, false);
+assert.equal(failedCompare.error, 'Quote refresh failed');
+context.window.StockPulseApp = app;
 assert.equal((await byName.stockpulse_add_to_watchlist.execute({ symbol: '00700' })).added, true);
 
 console.log('WebMCP contract checks passed (4 tools, schema bounds, annotations, and error paths).');
