@@ -14,6 +14,7 @@
     refreshTimer: null,
     chartCleanup: null,
     loading: false,
+    refreshGeneration: 0,
   };
 
   function loadWatchlist() {
@@ -64,7 +65,11 @@
   }
 
   async function refreshQuotes({ force = false } = {}) {
-    if (state.loading && !force) return;
+    if (state.loading && !force) {
+      return { ok: false, skipped: true, stale: false, error: 'A refresh is already in progress' };
+    }
+
+    const generation = ++state.refreshGeneration;
     state.loading = true;
     ui.setStatus('连接行情中…', 'loading');
     ui.setError('');
@@ -72,6 +77,10 @@
 
     try {
       const results = await quotesApi.fetchQuotes(state.watchlist);
+      if (generation !== state.refreshGeneration) {
+        return { ok: false, skipped: false, stale: true, error: 'A newer refresh superseded this result' };
+      }
+
       state.quotes = new Map(results.map((quote) => [quote.symbol, quote]));
       ui.renderWatchlist(document.querySelector('#watchlist'), results, state.greenUp);
       updateEmptyState();
@@ -83,13 +92,25 @@
       if (state.selectedSymbol && state.quotes.has(state.selectedSymbol)) {
         ui.renderDetail(state.quotes.get(state.selectedSymbol), state.greenUp);
       }
+
+      return { ok: true, skipped: false, stale: false, quotes: results };
     } catch (error) {
       console.error(error);
-      ui.setStatus('行情连接失败', 'error');
-      ui.setError('行情数据拉取失败，请检查网络后重试。');
+      if (generation === state.refreshGeneration) {
+        ui.setStatus('行情连接失败', 'error');
+        ui.setError('行情数据拉取失败，请检查网络后重试。');
+      }
+      return {
+        ok: false,
+        skipped: false,
+        stale: generation !== state.refreshGeneration,
+        error: 'Quote refresh failed',
+      };
     } finally {
-      state.loading = false;
-      showSkeleton(false);
+      if (generation === state.refreshGeneration) {
+        state.loading = false;
+        showSkeleton(false);
+      }
     }
   }
 
@@ -227,13 +248,12 @@
     if (!symbol) throw new Error('Invalid symbol');
     const [quote] = await quotesApi.fetchQuotes([symbol]);
     if (!quote) throw new Error('No quote data was returned for that symbol');
-    state.quotes.set(quote.symbol, quote);
     return quote;
   }
 
   async function refreshAndSnapshot() {
-    await refreshQuotes({ force: true });
-    return getSnapshot();
+    const refresh = await refreshQuotes({ force: true });
+    return { ...getSnapshot(), refresh };
   }
 
   async function addToWatchlist(rawSymbol) {
@@ -244,8 +264,11 @@
       state.watchlist = [...state.watchlist, symbol].slice(-24);
       saveWatchlist();
     }
-    await refreshQuotes({ force: true });
+    const refresh = await refreshQuotes({ force: true });
     return {
+      ok: refresh.ok,
+      stale: refresh.stale,
+      error: refresh.error || null,
       added: !alreadyPresent,
       symbol,
       watchlist: [...state.watchlist],
