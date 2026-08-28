@@ -65,7 +65,7 @@
       title: 'Get a stock quote',
       description: 'Fetch one bounded quote for an A-share, Hong Kong code, or US ticker. Use this for a specific symbol; do not treat the result as investment advice.',
       inputSchema: objectSchema({
-        symbol: { type: 'string', minLength: 1, maxLength: 16, pattern: '^[A-Za-z0-9.-]+,
+        symbol: { type: 'string', minLength: 1, maxLength: 16, pattern: '[A-Za-z0-9.-]+', description: 'Only letters, digits, dots, and hyphens are allowed',
       }, ['symbol']),
       annotations: { readOnlyHint: true, untrustedContentHint: true },
       execute: async (args) => {
@@ -124,7 +124,7 @@
       title: 'Add symbol to StockPulse watchlist',
       description: 'Add one symbol to the visible StockPulse watchlist and refresh its quote. This changes local browser state; call only when the user explicitly asks to add the symbol, then verify with stockpulse_get_watchlist.',
       inputSchema: objectSchema({
-        symbol: { type: 'string', minLength: 1, maxLength: 16, pattern: '^[A-Za-z0-9.-]+,
+        symbol: { type: 'string', minLength: 1, maxLength: 16, pattern: '[A-Za-z0-9.-]+', description: 'Only letters, digits, dots, and hyphens are allowed',
       }, ['symbol']),
       annotations: { readOnlyHint: false, destructiveHint: false, untrustedContentHint: true },
       execute: async (args) => {
