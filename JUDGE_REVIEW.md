@@ -4,20 +4,26 @@ First review: 2026-08-28
 Repository: POP-YU/stock-pulse
 Review basis: official Devpost judging dimensions, inspected branch oss-readiness, and verified repository metadata. This is an internal assessment, not an official score.
 
-| Dimension | Current score | Why points are lost | Highest-value next actions |
+## Review 1 — before WebMCP integration
+
+The initial baseline scored WebMCP Leverage 1/10, Execution 5/10, Potential Impact 4/10, and Creativity & Ambition 3/10. The central blocker was that removing WebMCP would have changed nothing.
+
+## Review 2 — after static WebMCP integration
+
+| Dimension | Current score | Evidence and remaining deduction | Highest-value next actions |
 |---|---:|---|---|
-| WebMCP Leverage | 1/10 | The inspected app is a useful static dashboard but had no registered WebMCP tool surface. Removing WebMCP would currently change nothing. | 1. Register a small, non-overlapping tool set. 2. Make one end-to-end agent workflow visible. 3. Verify tool results in-browser. |
-| Execution | 5/10 | The open oss-readiness PR already adds a coherent app, graceful failure paths, tests, CI, CodeQL, and maintainer docs. Live deployment and browser evidence are still unverified. | 1. Publish/verify the live app. 2. Add WebMCP negative-path tests. 3. Capture a deterministic demo script. |
-| Potential Impact | 4/10 | Cross-market, no-key, static hosting is approachable, but the current value proposition is a dashboard rather than an agent-native workflow. Market data is delayed/unstable and not trading advice. | 1. Show why an agent saves time (compare, explain, personalize watchlist). 2. Keep bounded, transparent data provenance. 3. Document audience and limitations. |
-| Creativity & Ambition | 3/10 | Native Canvas and zero-runtime-dependency choices are disciplined, but the concept is conventional until the agent collaboration is demonstrated. | 1. Design one memorable human+agent task. 2. Prefer composable tools over a novelty chatbot. 3. Use a concise, evidence-backed demo. |
+| WebMCP Leverage | 5/10 | Four single-purpose tools now use document.modelContext.registerTool with explicit schemas, bounded inputs, read-only/untrusted annotations, and a visible add-and-read-back workflow. Real browser discovery/execution is still unverified. | 1. Run tools in Chrome/WebMCP or ChatGPT browser. 2. Capture the compare -> explicit add -> read-back flow. 3. Keep output and error evidence. |
+| Execution | 6/10 | Existing PR adds a coherent zero-dependency app, graceful failure paths, smoke tests, CI, CodeQL, and maintainer docs. Static WebMCP checks and CI passed; live deployment and browser evidence remain open. | 1. Verify a live URL. 2. Finish CodeQL and record result. 3. Add runtime negative-path evidence. |
+| Potential Impact | 5/10 | Cross-market, no-key static hosting is approachable, and the agent can now perform a useful watchlist comparison without placing trades. Audience, freshness limits, and provenance are explicit. | 1. Show a concrete time-saving user story. 2. Add a concise English challenge narrative. 3. Avoid implying investment advice. |
+| Creativity & Ambition | 4/10 | Agent-assisted market triage is more distinctive than a plain dashboard, while keeping the implementation disciplined. It needs a memorable but truthful demo to score higher. | 1. Produce an under-three-minute narrated demo. 2. Emphasize human confirmation on state changes. 3. Compare against showcased WebMCP apps for clarity, not feature count. |
 
 ## Overall
 
-Current internal estimate: 3.25/10 before WebMCP integration; 5-7/10 is plausible after verified P0 work. This is not a guarantee of placement. Eligibility, live URL, timestamped changes, and demo evidence are gating risks.
+Current internal estimate: **5/10 before runtime/live evidence**. This is not an official score or a placement guarantee. Eligibility, live URL, timestamped changes, demo video, and the September 3 submission freeze remain gating risks.
 
 ## Review rules for the next pass
 
-- Re-score after every P0 milestone.
 - Do not award credit for tool registration until a real browser executes the tool.
 - Separate repository/static evidence from live-runtime evidence.
+- Re-score after live discovery, demo capture, and deployment verification.
 - Record disagreements or unverified assumptions explicitly.
