@@ -214,4 +214,50 @@
   } else {
     start();
   }
+
+  function getSnapshot() {
+    return {
+      watchlist: [...state.watchlist],
+      quotes: [...state.quotes.values()],
+    };
+  }
+
+  async function fetchQuote(rawSymbol) {
+    const symbol = quotesApi.normalizeSymbol(rawSymbol);
+    if (!symbol) throw new Error('Invalid symbol');
+    const [quote] = await quotesApi.fetchQuotes([symbol]);
+    if (!quote) throw new Error('No quote data was returned for that symbol');
+    state.quotes.set(quote.symbol, quote);
+    return quote;
+  }
+
+  async function refreshAndSnapshot() {
+    await refreshQuotes({ force: true });
+    return getSnapshot();
+  }
+
+  async function addToWatchlist(rawSymbol) {
+    const symbol = quotesApi.normalizeSymbol(rawSymbol);
+    if (!symbol) throw new Error('Invalid symbol');
+    const alreadyPresent = state.watchlist.includes(symbol);
+    if (!alreadyPresent) {
+      state.watchlist = [...state.watchlist, symbol].slice(-24);
+      saveWatchlist();
+    }
+    await refreshQuotes({ force: true });
+    return {
+      added: !alreadyPresent,
+      symbol,
+      watchlist: [...state.watchlist],
+      quote: state.quotes.get(symbol) || null,
+    };
+  }
+
+  window.StockPulseApp = Object.freeze({
+    getSnapshot,
+    fetchQuote,
+    refreshAndSnapshot,
+    addToWatchlist,
+  });
+
 })();
