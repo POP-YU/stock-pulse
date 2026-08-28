@@ -20,11 +20,14 @@
 
 - Added COMPETITION_CHECKLIST.md with requirement, gap, priority, and verification tracking.
 - Added JUDGE_REVIEW.md with an initial four-dimension judge-mode assessment.
-- Added this append-only improvement log.
+- Added a safe four-tool WebMCP surface in js/webmcp.js and an app bridge in js/app.js.
+- Added WebMCP script loading, registration-focused smoke assertions, and README workflow documentation.
+- Re-scored JUDGE_REVIEW.md after static WebMCP integration.
 
 ### Verification
 
-- Documents are committed on the existing oss-readiness branch via the open PR workflow.
+- Documents and WebMCP changes are committed on the existing oss-readiness branch via the open PR workflow.
+- GitHub Actions CI run for head c8386773 passed syntax and smoke checks; CodeQL was still in progress at the last check.
 - Repository reads and commit metadata were obtained through the GitHub connector.
 - Runtime WebMCP behavior remains UNVERIFIED until the branch is opened in a compatible browser.
 
