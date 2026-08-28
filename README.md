@@ -111,6 +111,30 @@ stock-pulse/
 └── LICENSE
 ```
 
+
+## WebMCP agent workflows
+
+StockPulse exposes a small, composable WebMCP surface so an agent can inspect market data, compare the visible watchlist, and (only after an explicit user request) add a symbol to that watchlist. The dashboard remains fully usable by people without an agent; WebMCP adds a verifiable collaboration layer rather than a separate chatbot.
+
+Registered tools:
+
+- stockpulse_get_watchlist — read the visible watchlist and loaded quote snapshots.
+- stockpulse_get_quote — fetch one bounded quote for an A-share, HK code, or US ticker.
+- stockpulse_compare_watchlist — refresh and rank the current watchlist by percentage movement.
+- stockpulse_add_to_watchlist — user-directed local watchlist update, followed by a required read-back verification.
+
+Every tool has an explicit JSON schema, bounded inputs, structured results, and actionable errors. Quote and comparison results are marked as untrusted external data and include provenance/limitations. The mutating tool is intentionally explicit and does not place orders or change remote data.
+
+### Try WebMCP locally
+
+1. Use a WebMCP-capable Chrome preview (Chrome 149+), enable chrome://flags/#enable-webmcp-testing, and restart the browser.
+2. Serve the repository over http://localhost or another secure context; do not open the file directly.
+3. Open the StockPulse page, then use a compatible agent/tool inspector to discover stockpulse_* tools.
+4. Demonstrate the workflow: get watchlist -> compare watchlist -> ask the user whether to add a symbol -> add -> get watchlist again.
+5. If document.modelContext is unavailable, the dashboard still works and the page logs a clear capability message; this is expected on browsers without WebMCP.
+
+The WebMCP implementation is in js/webmcp.js and the application bridge is in js/app.js. Browser execution evidence is tracked separately from static repository checks in COMPETITION_CHECKLIST.md.
+
 ## Contributing
 
 Contributions are welcome. Good first contributions include documentation fixes, accessibility improvements, parser hardening, test coverage, and small UX changes.
