@@ -29,18 +29,15 @@
     return value;
   }
 
-  function register(context, definition) {
-    const result = context.registerTool(definition);
-    if (result && typeof result.then === 'function') {
-      result.catch((error) => console.error('StockPulse WebMCP registration failed', error));
-    }
+  async function register(context, definition) {
+    await context.registerTool(definition);
   }
 
-  function registerTools() {
+  async function registerTools() {
     const context = document.modelContext;
     if (!context || typeof context.registerTool !== 'function') return false;
 
-    register(context, {
+    await register(context, {
       name: 'stockpulse_get_watchlist',
       title: 'Get StockPulse watchlist',
       description: 'Read the user-visible StockPulse watchlist and its latest loaded quote snapshots. Returns bounded, untrusted market data; it never changes the page.',
@@ -56,7 +53,7 @@
       },
     });
 
-    register(context, {
+    await register(context, {
       name: 'stockpulse_get_quote',
       title: 'Get a stock quote',
       description: 'Fetch one bounded quote for an A-share, Hong Kong code, or US ticker. Use this for a specific symbol; do not treat the result as investment advice.',
@@ -73,7 +70,7 @@
       },
     });
 
-    register(context, {
+    await register(context, {
       name: 'stockpulse_compare_watchlist',
       title: 'Compare watchlist movement',
       description: 'Refresh the current watchlist and return a compact ranking by percentage movement. This is a read-only comparison workflow for discussion, not a trading signal.',
@@ -102,7 +99,7 @@
       },
     });
 
-    register(context, {
+    await register(context, {
       name: 'stockpulse_add_to_watchlist',
       title: 'Add symbol to StockPulse watchlist',
       description: 'Add one symbol to the visible StockPulse watchlist and refresh its quote. This changes local browser state; call only when the user explicitly asks to add the symbol, then verify with stockpulse_get_watchlist.',
@@ -122,9 +119,9 @@
     return true;
   }
 
-  function start() {
+  async function start() {
     try {
-      registerTools();
+      await registerTools();
     } catch (error) {
       console.error('StockPulse WebMCP unavailable', error);
     }
