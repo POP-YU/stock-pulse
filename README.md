@@ -112,6 +112,11 @@ stock-pulse/
 ```
 
 
+
+### Security boundary for upstream quotes
+
+The current zero-backend implementation uses the upstream provider's JSONP-compatible script endpoints so it can work without a server. That means the provider response executes in the page's JavaScript context; it is **not** an isolated data-only fetch. Do not use StockPulse with sensitive pages, credentials, brokerage sessions, or private data, and do not treat this architecture as production trading infrastructure. A future hardened deployment should move provider access behind a trusted proxy or an isolated origin and add a strict content-security policy. This limitation is intentionally recorded in the challenge checklist rather than hidden.
+
 ## WebMCP agent workflows
 
 StockPulse exposes a small, composable WebMCP surface so an agent can inspect market data, compare the visible watchlist, and (only after an explicit user request) add a symbol to that watchlist. The dashboard remains fully usable by people without an agent; WebMCP adds a verifiable collaboration layer rather than a separate chatbot.
