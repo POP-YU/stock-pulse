@@ -27,7 +27,7 @@
 ### Verification
 
 - Documents and WebMCP changes are committed on the existing oss-readiness branch via the open PR workflow.
-- GitHub Actions CI run for head c8386773 passed syntax and smoke checks; CodeQL was still in progress at the last check.
+- GitHub Actions CI and CodeQL runs for the WebMCP branch completed successfully; this is static/CI evidence only.
 - Repository reads and commit metadata were obtained through the GitHub connector.
 - Runtime WebMCP behavior remains UNVERIFIED until the branch is opened in a compatible browser.
 
