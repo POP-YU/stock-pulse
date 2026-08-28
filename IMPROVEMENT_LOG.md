@@ -64,7 +64,7 @@
 
 ### Verification
 
-- The preceding CI run passed; the latest run is re-triggered for the final head and must be rechecked before merge.
+- CI run 33183034220 for head 942a9507 passed syntax, smoke, and WebMCP contract checks. CodeQL run 33183034214 for the same head was still in progress at the last check.
 - Real browser discovery/execution, live deployment, and challenge eligibility remain UNVERIFIED.
 
 ### Remaining Risks
