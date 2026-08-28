@@ -11,7 +11,7 @@ const snapshot = {
 };
 const app = {
   getSnapshot: () => snapshot,
-  fetchQuote: async (symbol) => ({ symbol, name: 'Demo', changePct: 1.2, last: 100, change: 1 }),
+  fetchQuote: async (symbol) => ({ symbol: symbol === 'AAPL' ? 'usAAPL' : symbol, name: 'Demo', changePct: 1.2, last: 100, change: 1 }),
   refreshAndSnapshot: async () => snapshot,
   addToWatchlist: async (symbol) => ({ added: true, symbol, watchlist: [symbol], quote: null }),
 };
@@ -53,7 +53,7 @@ await assert.rejects(
   byName.stockpulse_get_quote.execute({ symbol: 'x'.repeat(17) }),
   /no longer than 16/,
 );
-assert.equal((await byName.stockpulse_get_quote.execute({ symbol: 'AAPL' })).quote.symbol, 'AAPL');
+assert.equal((await byName.stockpulse_get_quote.execute({ symbol: 'AAPL' })).quote.symbol, 'usAAPL');
 assert.equal((await byName.stockpulse_compare_watchlist.execute({})).count, 1);
 assert.equal((await byName.stockpulse_add_to_watchlist.execute({ symbol: '00700' })).added, true);
 
