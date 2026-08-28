@@ -13,13 +13,13 @@ Target branch: oss-readiness
 | Agent workflow (understand -> inspect -> act -> verify) | PARTIAL | Add structured read tools and a safe watchlist workflow with verification | P0 | Run scripted demo and capture tool calls/results |
 | Clear tool schemas and descriptions | VERIFIED (STATIC) | Schemas, bounds, structured results, and errors are covered by code/smoke checks; runtime validation remains open | P0 | Inspect registrations and invalid-input tests |
 | Human + agent collaboration | PARTIAL | Mutating watchlist action must be explicit and visible; no silent destructive changes | P1 | Demo shows user-visible watchlist update and follow-up readback |
-| Existing project expanded with WebMCP during submission period | UNVERIFIED | Need timestamped commit after 2026-08-25 and before submission | P0 | GitHub commit history on challenge branch |
+| Existing project expanded with WebMCP during submission period | VERIFIED (STATIC) | WebMCP commits are timestamped 2026-08-28 on oss-readiness, within the submission period | P0 | GitHub commit history on challenge branch |
 | Public source repository with open-source license | VERIFIED | MIT license exists on branch; keep source/assets complete | P1 | License/file audit |
 | README explains WebMCP value and implementation | VERIFIED (STATIC) | WebMCP purpose, four tools, setup, workflow, and limitations are documented | P0 | README review against rules |
 | Demo video under 3 minutes with audio | UNVERIFIED | No verified public YouTube URL in repository | P0 | Play public YouTube link and record duration/audio |
 | English submission materials | PARTIAL | Main README is Chinese/English mixed; provide concise English challenge summary | P1 | Manual review of Devpost fields |
 | Browser compatibility | UNVERIFIED | Chrome WebMCP flag / origin isolation and ChatGPT browser need real-device testing | P0 | Chrome 149+ flag test plus ChatGPT in-app browser smoke test |
-| Security and trust boundaries | PARTIAL | External quote data is untrusted; tool output must be bounded and read-only hints accurate | P1 | Injection/error/oversized-output tests |
+| Security and trust boundaries | PARTIAL | Tool outputs are bounded and marked untrusted; runtime injection/error behavior still needs browser evidence | P1 | Injection/error/oversized-output tests |
 | Eligibility | UNVERIFIED | Rules currently exclude China/Hong Kong and other listed locations; entrant must verify residence/eligibility | P0 | Entrant checks Devpost rules and contest jurisdiction |
 | Post-submission freeze | TODO | Do not change repo/live site/submission after submission window closes | P0 | Freeze checklist on September 3 |
 
