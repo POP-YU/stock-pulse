@@ -19,7 +19,7 @@ Target branch: oss-readiness
 | Demo video under 3 minutes with audio | UNVERIFIED | No verified public YouTube URL in repository | P0 | Play public YouTube link and record duration/audio |
 | English submission materials | PARTIAL | Main README is Chinese/English mixed; provide concise English challenge summary | P1 | Manual review of Devpost fields |
 | Browser compatibility | UNVERIFIED | Chrome WebMCP flag / origin isolation and ChatGPT browser need real-device testing | P0 | Chrome 149+ flag test plus ChatGPT in-app browser smoke test |
-| Security and trust boundaries | PARTIAL | Tool outputs are bounded and marked untrusted; runtime injection/error behavior still needs browser evidence | P1 | Injection/error/oversized-output tests |
+| Security and trust boundaries | PARTIAL / HIGH RISK | WebMCP outputs are bounded and marked untrusted, but quote JSONP executes provider JavaScript in-page; hardened proxy/isolation is not implemented | P1 | Security review, CSP/proxy plan, injection/error/oversized-output tests |
 | Eligibility | UNVERIFIED | Rules currently exclude China/Hong Kong and other listed locations; entrant must verify residence/eligibility | P0 | Entrant checks Devpost rules and contest jurisdiction |
 | Post-submission freeze | TODO | Do not change repo/live site/submission after submission window closes | P0 | Freeze checklist on September 3 |
 
