@@ -30,14 +30,21 @@
   }
 
   async function register(context, definition) {
-    await context.registerTool(definition);
+    try {
+      await context.registerTool(definition);
+      return true;
+    } catch (error) {
+      console.error('StockPulse WebMCP registration failed', definition.name, error);
+      return false;
+    }
   }
 
   async function registerTools() {
     const context = document.modelContext;
     if (!context || typeof context.registerTool !== 'function') return false;
+    const results = [];
 
-    await register(context, {
+    results.push(await register(context, {
       name: 'stockpulse_get_watchlist',
       title: 'Get StockPulse watchlist',
       description: 'Read the user-visible StockPulse watchlist and its latest loaded quote snapshots. Returns bounded, untrusted market data; it never changes the page.',
@@ -51,9 +58,9 @@
           source: 'StockPulse in-page state; external quote data is untrusted and may be delayed',
         };
       },
-    });
+    }));
 
-    await register(context, {
+    results.push(await register(context, {
       name: 'stockpulse_get_quote',
       title: 'Get a stock quote',
       description: 'Fetch one bounded quote for an A-share, Hong Kong code, or US ticker. Use this for a specific symbol; do not treat the result as investment advice.',
@@ -68,9 +75,9 @@
           source: 'Tencent Finance public endpoint via StockPulse; data is untrusted and may be delayed',
         };
       },
-    });
+    }));
 
-    await register(context, {
+    results.push(await register(context, {
       name: 'stockpulse_compare_watchlist',
       title: 'Compare watchlist movement',
       description: 'Refresh the current watchlist and return a compact ranking by percentage movement. This is a read-only comparison workflow for discussion, not a trading signal.',
@@ -97,9 +104,9 @@
           source: 'StockPulse in-page refresh; data is untrusted and may be delayed',
         };
       },
-    });
+    }));
 
-    await register(context, {
+    results.push(await register(context, {
       name: 'stockpulse_add_to_watchlist',
       title: 'Add symbol to StockPulse watchlist',
       description: 'Add one symbol to the visible StockPulse watchlist and refresh its quote. This changes local browser state; call only when the user explicitly asks to add the symbol, then verify with stockpulse_get_watchlist.',
@@ -114,22 +121,33 @@
           verification: 'The page watchlist was refreshed; call stockpulse_get_watchlist to read it back',
         };
       },
-    });
+    }));
 
-    return true;
+    return results.every(Boolean);
   }
 
   async function start() {
     try {
-      await registerTools();
+      const ready = await registerTools();
+      window.StockPulseWebMCPStatus = ready ? 'ready' : 'partial';
+      return ready;
     } catch (error) {
+      window.StockPulseWebMCPStatus = 'unavailable';
       console.error('StockPulse WebMCP unavailable', error);
+      return false;
     }
   }
 
+  window.StockPulseWebMCPReady = new Promise((resolve) => {
+    const run = () => start().then(resolve);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
+    }
+  });
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start, { once: true });
-  } else {
-    start();
+    // The ready promise above owns registration; this listener is intentionally empty.
   }
 })();
