@@ -26,7 +26,9 @@ node --check js/quotes.js
 node --check js/kline.js
 node --check js/ui.js
 node --check js/app.js
+node --check js/webmcp.js
 node tests/smoke.mjs
+node tests/webmcp-contract.mjs
 ```
 
 The same checks run in GitHub Actions.
