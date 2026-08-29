@@ -4,7 +4,7 @@ StockPulse is intentionally small. The roadmap favors reliability, maintainabili
 
 ## Now — stabilization
 
-- [ ] Publish the live GitHub Pages demo from `main`.
+- [x] Publish the live GitHub Pages demo from `main` — verified at https://pop-yu.github.io/stock-pulse/.
 - [ ] Establish the first tagged release (`v0.1.0`).
 - [ ] Harden quote/K-line parsing against malformed or partial upstream responses.
 - [ ] Expand smoke coverage for required local assets and critical DOM hooks.
