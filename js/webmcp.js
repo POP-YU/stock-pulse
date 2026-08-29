@@ -3,6 +3,13 @@
 
   const MAX_RESULTS = 24;
 
+  function updateAgentStatus(state, message) {
+    const node = document.querySelector('#agent-status');
+    if (!node) return;
+    node.dataset.state = state;
+    node.textContent = message;
+  }
+
   function unavailable() {
     throw new Error('StockPulse app is still initializing; retry after the page is ready');
   }
@@ -143,9 +150,11 @@
     try {
       const ready = await registerTools();
       window.StockPulseWebMCPStatus = ready ? 'ready' : 'partial';
+      updateAgentStatus(ready ? 'ok' : 'warning', ready ? 'Agent tools ready' : 'Agent tools partially available');
       return ready;
     } catch (error) {
       window.StockPulseWebMCPStatus = 'unavailable';
+      updateAgentStatus('error', 'Agent tools unavailable');
       console.error('StockPulse WebMCP unavailable', error);
       return false;
     }
