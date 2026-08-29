@@ -8,14 +8,19 @@ All notable user-visible and maintenance changes should be recorded here. StockP
 
 - OSS contribution, governance, security, support, and maintenance documentation.
 - GitHub issue and pull request templates.
-- CI smoke checks and JavaScript syntax validation.
+- CI smoke checks, JavaScript syntax validation, and WebMCP contract checks.
 - CodeQL security scanning workflow.
 - Dependabot configuration for GitHub Actions.
 - Architecture and release-process documentation.
+- A GitHub Pages deployment workflow and a public live demo.
+- WebMCP tools for bounded quote lookup, watchlist inspection/comparison, and explicit local watchlist updates with readback verification.
+- Maintainer evidence and form-length-limited Codex for Open Source application notes.
 
 ### Changed
 
-- README expanded with project status, architecture, maintenance model, and correct GitHub Pages instructions for the `main` branch.
+- README now explains the actual GitHub Pages Actions deployment path and links to maintainer evidence.
+- Contributor checks now match the checks enforced by CI.
+- Roadmap records the verified GitHub Pages milestone.
 
 ## 2026-08-10 — Initial public snapshot
 
