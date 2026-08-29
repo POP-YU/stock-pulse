@@ -4,6 +4,7 @@
   const MAX_RESULTS = 24;
 
   function updateAgentStatus(state, message) {
+    if (!document || typeof document.querySelector !== 'function') return;
     const node = document.querySelector('#agent-status');
     if (!node) return;
     node.dataset.state = state;
