@@ -116,3 +116,33 @@
 ### Next Priority
 
 - Verify a real browser tool discovery/execution flow, then decide whether a trusted data proxy is feasible before the competition freeze.
+
+
+## 2026-08-29 — K-line stale-response guard
+
+### Checked
+
+- Investigated the CI failure notification shown by the user and compared it with the current Actions runs.
+- Reviewed the detail-panel async path for a second stale-response race.
+
+### Problems Found
+
+- Earlier CI failures were caused by malformed WebMCP schema text; the source was repaired and the exact branch content now passes syntax/contract checks.
+- A slow K-line response could render after the user selected another symbol/range or closed the detail panel.
+
+### Changes Made
+
+- Added chart generation tracking in js/app.js.
+- Older K-line responses are now ignored when the selected symbol or request generation no longer matches.
+- Closing the detail panel invalidates pending chart work.
+
+### Verification
+
+- CI run 33222344026 for head 0fdf9980 passed.
+- CodeQL run 33222343937 for head 0fdf9980 passed.
+- The WebMCP source and contract test also pass when fetched from the exact oss-readiness branch and run locally.
+- Real browser WebMCP discovery/execution and live deployment remain UNVERIFIED.
+
+### Next Priority
+
+- Perform the real browser smoke test and verify the deployed URL; do not merge or freeze the submission branch until those artifacts are captured.
