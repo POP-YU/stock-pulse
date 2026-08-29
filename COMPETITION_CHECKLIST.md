@@ -1,27 +1,35 @@
 # WebMCP Challenge Checklist
 
-Last reviewed: 2026-08-28
+Last reviewed: 2026-08-29
 Target repository: POP-YU/stock-pulse
-Target branch: oss-readiness
+Target branch: main
 
 > Deadline correction: the official Devpost rules currently list the submission deadline as **2026-09-03 13:00 PT**, not September 10. Treat September 3 as the hard submission gate. Rules and eligibility can change; re-check the official pages before submitting.
 
 | Requirement | Current Status | Gap | Priority | Verification |
 |---|---|---|---|---|
-| Working live web app | PARTIAL | GitHub Pages is documented but pages deployment was not verified; publish and verify a live URL | P0 | Open deployed URL in Chrome/WebMCP and ChatGPT browser |
-| WebMCP is a meaningful core capability | PARTIAL | Four tools are now registered statically; real browser discovery/execution remains unverified | P0 | document.modelContext.getTools() lists StockPulse tools; execute each in a browser |
-| Agent workflow (understand -> inspect -> act -> verify) | PARTIAL | Add structured read tools and a safe watchlist workflow with verification | P0 | Run scripted demo and capture tool calls/results |
-| Clear tool schemas and descriptions | VERIFIED (STATIC) | Schemas, bounds, structured results, and errors are covered by code/smoke checks; runtime validation remains open | P0 | Inspect registrations and invalid-input tests |
-| Human + agent collaboration | PARTIAL | Mutating watchlist action must be explicit and visible; no silent destructive changes | P1 | Demo shows user-visible watchlist update and follow-up readback |
-| Existing project expanded with WebMCP during submission period | VERIFIED (STATIC) | WebMCP commits are timestamped 2026-08-28 on oss-readiness, within the submission period | P0 | GitHub commit history on challenge branch |
-| Public source repository with open-source license | VERIFIED | MIT license exists on branch; keep source/assets complete | P1 | License/file audit |
-| README explains WebMCP value and implementation | VERIFIED (STATIC) | WebMCP purpose, four tools, setup, workflow, and limitations are documented | P0 | README review against rules |
+| Working live web app | VERIFIED | GitHub Pages deployment is live at https://pop-yu.github.io/stock-pulse/ | P0 | Pages workflow run 33224515336; live URL opened and rendered |
+| WebMCP is a meaningful core capability | VERIFIED (LIVE) | Four tools were discovered and executed on the deployed URL; Chrome-specific compatibility remains open | P0 | Live document.modelContext discovery and tool calls |
+| Agent workflow (understand -> inspect -> act -> verify) | VERIFIED (LIVE) | Live flow completed: read watchlist -> quote -> compare -> explicit add -> readback | P0 | Live tool results captured on 2026-08-29 |
+| Clear tool schemas and descriptions | VERIFIED (STATIC + LIVE) | Runtime invalid-input matrix still represented by contract tests; no schema drift observed live | P0 | CI contract test plus live tool discovery |
+| Human + agent collaboration | VERIFIED (LIVE) | Add action is explicit, local-only, and followed by readback verification | P1 | Live add of MSFT returned ok: true, then watchlist readback contained usMSFT |
+| Existing project expanded with WebMCP during submission period | VERIFIED | WebMCP commits remain timestamped within the submission period | P0 | GitHub commit history and merged PR |
+| Public source repository with open-source license | VERIFIED | MIT license exists on main | P1 | License/file audit |
+| README explains WebMCP value and implementation | VERIFIED (STATIC) | Keep final English Devpost copy consistent with README | P0 | README review against rules |
 | Demo video under 3 minutes with audio | UNVERIFIED | No verified public YouTube URL in repository | P0 | Play public YouTube link and record duration/audio |
-| English submission materials | PARTIAL | Main README is Chinese/English mixed; provide concise English challenge summary | P1 | Manual review of Devpost fields |
-| Browser compatibility | UNVERIFIED | Chrome WebMCP flag / origin isolation and ChatGPT browser need real-device testing | P0 | Chrome 149+ flag test plus ChatGPT in-app browser smoke test |
+| English submission materials | VERIFIED (DRAFT) | Entrant must paste/review final Devpost fields | P1 | SUBMISSION_DRAFT.md exists on main |
+| Browser compatibility | PARTIAL | Deployed URL works in Codex in-app browser WebMCP; Chrome 149+ flag and other browser paths remain untested | P0 | Repeat the same flow in the required submission browser |
 | Security and trust boundaries | PARTIAL / HIGH RISK | WebMCP outputs are bounded and marked untrusted, but quote JSONP executes provider JavaScript in-page; hardened proxy/isolation is not implemented | P1 | Security review, CSP/proxy plan, injection/error/oversized-output tests |
 | Eligibility | UNVERIFIED | Rules currently exclude China/Hong Kong and other listed locations; entrant must verify residence/eligibility | P0 | Entrant checks Devpost rules and contest jurisdiction |
 | Post-submission freeze | TODO | Do not change repo/live site/submission after submission window closes | P0 | Freeze checklist on September 3 |
+
+## Runtime evidence
+
+- Pages workflow run: https://github.com/POP-YU/stock-pulse/actions/runs/33224515336
+- Deployed URL: https://pop-yu.github.io/stock-pulse/
+- Live tools discovered: stockpulse_get_watchlist, stockpulse_get_quote, stockpulse_compare_watchlist, stockpulse_add_to_watchlist
+- Live add/readback: MSFT -> usMSFT
+- Evidence date: 2026-08-29
 
 ## Official references
 
