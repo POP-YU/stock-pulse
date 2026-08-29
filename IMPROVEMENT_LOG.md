@@ -75,3 +75,44 @@
 ### Next Priority
 
 - Verify the latest CI and CodeQL runs, then perform a Chrome WebMCP browser smoke test and publish/verify the live URL before the September 3 freeze.
+
+
+## 2026-08-29 — Refresh correctness and CI recovery
+
+### Checked
+
+- Reviewed the failed WebMCP CI logs rather than treating the failure as transient.
+- Rechecked the generated WebMCP source through the GitHub Contents API and executed local syntax/contract checks against that exact branch content.
+- Revisited the agent workflow's stale-data and refresh-failure behavior.
+
+### Problems Found
+
+- A malformed symbol-schema edit caused a real JavaScript syntax error in js/webmcp.js; CI correctly stopped before the smoke/contract steps.
+- Forced refreshes could race and let an older response overwrite newer page state.
+- compare_watchlist could report an empty ranking after a failed refresh without exposing failure to the agent.
+- get_quote mutated the in-memory quote cache despite its read-only annotation.
+
+### Changes Made
+
+- Removed the malformed duplicated WebMCP tail and repaired schema syntax.
+- Added a refresh generation gate so only the newest quote refresh can update UI/state.
+- Returned structured refresh outcomes, including stale/failure state, to the WebMCP comparison and add workflows.
+- Made get_quote a pure fetch without writing the global quote cache.
+- Extended the WebMCP contract test for schema bounds and failed refresh results.
+
+### Verification
+
+- GitHub Actions CI run 33222245191 for head 992705a8 passed.
+- The same exact branch source passed a local node syntax check and WebMCP contract check obtained through the GitHub Contents API.
+- CodeQL run 33222245155 for head 992705a8 was still in progress at the last check.
+- Browser/runtime verification is still UNVERIFIED.
+
+### Remaining Risks
+
+- The JSONP provider response executes in-page and remains the highest security boundary risk.
+- K-line requests and other UI flows still need cancellation/generation handling.
+- Live deployment, real WebMCP discovery/execution, video, and eligibility remain P0 submission gates.
+
+### Next Priority
+
+- Verify a real browser tool discovery/execution flow, then decide whether a trusted data proxy is feasible before the competition freeze.
