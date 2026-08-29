@@ -44,16 +44,13 @@ Then open `http://localhost:8080`.
 
 ## GitHub Pages
 
-This repository is ready for GitHub Pages because it is fully static and includes `.nojekyll`.
+The static site is published automatically from `main` by [the Pages workflow](.github/workflows/deploy-pages.yml). The workflow uses GitHub Pages Actions rather than a branch-based deployment, so do not switch the repository to **Deploy from a branch**.
 
-To publish it:
+After a successful deployment, the live project is available at:
 
-1. Open **Settings → Pages** in this repository.
-2. Choose **Deploy from a branch**.
-3. Select **`main`** and **`/ (root)`**.
-4. Save.
+https://pop-yu.github.io/stock-pulse/
 
-The site will be available at `https://pop-yu.github.io/stock-pulse/` after GitHub finishes the first deployment.
+You can inspect recent deployment results in the [Pages workflow history](https://github.com/POP-YU/stock-pulse/actions/workflows/deploy-pages.yml).
 
 ## Data sources
 
