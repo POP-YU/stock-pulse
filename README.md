@@ -9,6 +9,8 @@ Open-source, **zero-runtime-dependency** financial market dashboard for **A-shar
 
 > Project status: **early-stage and actively maintained**. The codebase is intentionally small so contributors can understand the full data flow without learning a framework or build system first.
 
+> **Maintainer evidence:** [MAINTAINER_EVIDENCE.md](MAINTAINER_EVIDENCE.md) records the live project responsibilities and verification links. [CODEX_FOR_OSS_APPLICATION.md](CODEX_FOR_OSS_APPLICATION.md) contains truthful, form-length-limited application notes; it does not claim unsupported adoption metrics.
+
 ## Why StockPulse
 
 Many market dashboards require a backend, build toolchain, account, API key, or runtime CDN. StockPulse is a readable, self-contained reference implementation for fetching and visualizing cross-market quote data directly in the browser.
