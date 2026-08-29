@@ -15,6 +15,7 @@
     chartCleanup: null,
     loading: false,
     refreshGeneration: 0,
+    chartGeneration: 0,
   };
 
   function loadWatchlist() {
@@ -119,6 +120,7 @@
     if (!quote) return;
 
     state.selectedSymbol = symbol;
+    const chartGeneration = ++state.chartGeneration;
     const panel = document.querySelector('#detail-panel');
     panel.hidden = false;
     ui.renderDetail(quote, state.greenUp);
@@ -133,11 +135,13 @@
 
     try {
       const rows = await klineApi.fetchKline(symbol, days);
+      if (chartGeneration !== state.chartGeneration || state.selectedSymbol !== symbol) return;
       state.chartCleanup?.();
       state.chartCleanup = klineApi.renderKline(chart, rows, { greenUp: state.greenUp });
       document.querySelector('#chart-time').textContent = rows.at(-1)?.date || '—';
     } catch (error) {
       console.error(error);
+      if (chartGeneration !== state.chartGeneration || state.selectedSymbol !== symbol) return;
       state.chartCleanup?.();
       state.chartCleanup = null;
       chart.innerHTML = '<div class="chart-empty">K 线数据暂时不可用</div>';
@@ -190,6 +194,7 @@
 
     document.querySelector('#detail-close').addEventListener('click', () => {
       state.selectedSymbol = null;
+      state.chartGeneration += 1;
       state.chartCleanup?.();
       state.chartCleanup = null;
       document.querySelector('#detail-panel').hidden = true;
