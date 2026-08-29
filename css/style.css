@@ -65,6 +65,9 @@ button { cursor: pointer; }
 .status-pill[data-state="loading"], .status-pill[data-state="warning"] { color: #92400e; background: #fef3c7; }
 .status-pill[data-state="error"] { color: #991b1b; background: #fee2e2; }
 .quote-time { color: var(--muted); font-size: 12px; }
+.agent-status { color: #1d4ed8; background: #dbeafe; }
+.agent-status[data-state="error"] { color: #991b1b; background: #fee2e2; }
+.agent-status[data-state="warning"] { color: #92400e; background: #fef3c7; }
 .spacer { flex: 1; }
 .toggle { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; cursor: pointer; user-select: none; }
 .toggle input { position: absolute; opacity: 0; pointer-events: none; }
