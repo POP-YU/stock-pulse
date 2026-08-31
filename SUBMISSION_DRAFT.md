@@ -10,9 +10,25 @@ StockPulse — an agent-assisted stock watchlist
 
 StockPulse turns a static market dashboard into a transparent human-and-agent workflow: inspect quotes, compare a watchlist, take one explicit local action, and verify the result.
 
-## What WebMCP adds
+## Problem
 
-The WebMCP layer exposes four bounded tools:
+A person can read a market dashboard, but an agent normally has to infer page structure, labels, controls, and state from the rendered UI. That makes repeated watchlist inspection and comparison brittle. StockPulse exposes the app's intended operations directly as structured WebMCP tools while leaving the same dashboard fully usable by a person.
+
+## Why WebMCP
+
+WebMCP is not a separate chatbot layer in StockPulse. It gives the agent a reliable contract over the same state the person sees.
+
+The current live workflow is:
+
+1. inspect the visible watchlist;
+2. fetch a bounded quote for one normalized symbol;
+3. refresh and compare the current watchlist;
+4. only after an explicit user request, add one symbol to the local watchlist;
+5. read the watchlist again to verify the mutation.
+
+Without WebMCP, an agent would need to guess through page controls and scrape rendered text. With WebMCP, the app defines the intended operations, schemas, limits, provenance, and error behavior directly.
+
+## WebMCP tools
 
 - `stockpulse_get_watchlist` — read the visible watchlist and loaded quote snapshots.
 - `stockpulse_get_quote` — fetch one normalized A-share, Hong Kong, or US symbol.
@@ -21,25 +37,43 @@ The WebMCP layer exposes four bounded tools:
 
 All market-data results are labeled untrusted and potentially delayed. The project does not place trades, require credentials, or mutate a remote brokerage account.
 
-## Suggested demo sequence (under 3 minutes)
+## Human + agent collaboration
 
-1. Open the deployed StockPulse URL in a WebMCP-compatible Chrome build.
-2. Show the dashboard and ask the agent to call `stockpulse_get_watchlist`.
-3. Ask for one symbol with `stockpulse_get_quote`.
-4. Ask the agent to compare the watchlist with `stockpulse_compare_watchlist`.
-5. Explicitly ask to add one symbol; call `stockpulse_add_to_watchlist`.
-6. Call `stockpulse_get_watchlist` again and point to the visible readback.
-7. Briefly show the README, source repository, and green CI/CodeQL checks.
-8. State the limitation: public quote data may be delayed, and JSONP is documented as a boundary-risk prototype choice.
+The person keeps control of consequential intent: the agent may inspect and compare freely, but the watchlist mutation is only performed after a direct user request. The workflow then verifies the result by reading state again. This makes the collaboration easy to explain in a short demo: **inspect -> compare -> confirm -> act -> verify**.
+
+## Live project
+
+- App: https://pop-yu.github.io/stock-pulse/
+- Source: https://github.com/POP-YU/stock-pulse
+- License: MIT
+
+The live URL and all four WebMCP tools were verified on 2026-08-29 in a WebMCP-capable in-app browser. Re-verify the same flow on the exact final commit immediately before submission.
+
+## Suggested demo sequence
+
+Use `DEMO_RUNBOOK.md` as the recording script. Keep the final public YouTube video below three minutes with narration/audio and visibly prove:
+
+- tool discovery/execution;
+- structured watchlist and quote reads;
+- useful comparison;
+- explicit human-directed local mutation;
+- read-back verification;
+- public source/license and green checks for the submitted version.
+
+## Known limitations
+
+- Public quote data can be delayed, incomplete, or unavailable.
+- The zero-backend quote path currently uses a JSONP-compatible provider boundary that executes provider JavaScript in-page; this is documented as a prototype security limitation.
+- The project is educational/reference software and is not investment advice or trading infrastructure.
+- Chrome/WebMCP preview compatibility should be re-tested on the exact judge path before submission.
 
 ## Evidence still required before submission
 
-- A verified public live URL.
-- A real browser capture showing tool discovery and execution.
-- A public YouTube demo with audio and duration below three minutes.
-- Final English Devpost text and links.
 - Entrant-confirmed eligibility under the current official rules.
+- A public YouTube demo with audio and duration below three minutes.
+- Final CI/CodeQL and live-deployment verification bound to the exact frozen commit SHA.
+- Final Devpost text and links pasted/reviewed by the entrant.
 
 ## Final review gate
 
-Re-check the [official rules](https://webmcp.devpost.com/rules) immediately before submitting. After the submission window closes, do not change the repository, live site, or submission.
+Re-check the official rules at https://webmcp.devpost.com/rules immediately before submitting. The current deadline is September 3, 2026 at 1:00 PM Pacific Time. After the submission window closes, do not modify the submitted repository, live site, or Devpost entry during judging; continue development only in a separate copy/fork if needed.
